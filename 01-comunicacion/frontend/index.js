@@ -3,6 +3,8 @@ const app = require("./app");
 
 const server = http.createServer(app);
 
-server.listen(19010, () =>
-  console.log("Ejecutando el frontend en el puerto 19010")
+const port = +process.env.PORT || 19010;
+
+server.listen(port, () =>
+  console.log(`Ejecutando el frontend en el puerto ${port}`)
 );

@@ -13,7 +13,10 @@ app.get("/healthz", (req, res) => res.send("Todo está ok"));
 app.get("/healthcheck", (req, res) => res.send("Todo está ok"));
 
 app.get("/api/config", (req, res) =>
-  res.json({ pathBackend1: "http://localhost:19020/api/message" })
+  res.json({
+    pathBackend1:
+      process.env.SERVICE_BACKEND1 || "http://localhost:19020/api/message",
+  })
 );
 
 app.use("**", (req, res) => res.send("ruta no encontrada"));

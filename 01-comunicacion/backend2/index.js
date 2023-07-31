@@ -3,6 +3,8 @@ const app = require("./app");
 
 const server = http.createServer(app);
 
-server.listen(19030, () =>
-  console.log("Ejecutando el backend 2 en el puerto 19030")
+const port = +process.env.PORT || 19030;
+
+server.listen(port, () =>
+  console.log(`Ejecutando el backend 2 en el puerto ${port}`)
 );

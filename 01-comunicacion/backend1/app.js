@@ -14,7 +14,10 @@ app.get("/api/message", async (req, res) => {
     msg01: "Respuesta desde el backend1",
   };
 
-  const path = "http://localhost:19030/api/message";
+  const path =
+    process.env.SERVICE_BACKEND2 || "http://localhost:19030/api/message";
+
+  console.log("PATH", path);
   const response = await axios.get(path);
 
   messages.msg02 = response.data.message;
