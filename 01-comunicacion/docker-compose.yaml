@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  backend1:
+    image: localhost:5000/backend1-ms
+    build:
+      context: .
+      dockerfile: backend1/Dockerfile
+    container_name: backend1-ms
+    mem_reservation: 128m
+    mem_limit: 256m
+    cpus: 0.5
+    environment:
+      - PORT=8090
+      - SERVICE_BACKEND2=http://backend2:8091/api/message
+    ports:
+      - "8090:8090"
+    networks:
+      - net-course-ms
+
+  backend2:
+    image: localhost:5000/backend2-ms
+    build:
+      context: .
+      dockerfile: backend2/Dockerfile
+    container_name: backend2-ms
+    mem_reservation: 128m
+    mem_limit: 256m
+    cpus: 0.5
+    environment:
+      - PORT=8091
+    ports:
+      - "8091:8091"
+    networks:
+      - net-course-ms
+
+  frontend:
+    image: localhost:5000/frontend-ms
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: frontend-ms
+    mem_reservation: 128m
+    mem_limit: 256m
+    cpus: 0.5
+    environment:
+      - PORT=8092
+      - SERVICE_BACKEND1=http://localhost:8090/api/message
+    ports:
+      - "8092:8092"
+    networks:
+      - net-course-ms
+
+networks:
+  net-course-ms:
+    driver: bridge
