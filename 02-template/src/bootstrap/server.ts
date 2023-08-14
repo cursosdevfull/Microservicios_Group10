@@ -1,3 +1,4 @@
+import { Application } from "express";
 import http from "http";
 
 import { Parameter } from "../core/parameter";
@@ -6,12 +7,12 @@ import { Bootstrap, BootstrapReturn } from "./bootstrap";
 
 export default class ServerBootstrap implements Bootstrap {
   instance: http.Server;
+
+  constructor(private readonly app: Application) {}
   initialize(): Promise<BootstrapReturn> {
     return new Promise((resolve, reject) => {
       const port = Parameter.PORT;
-      const server = http.createServer((req, res) => {
-        res.end("Hello World!");
-      });
+      const server = http.createServer(this.app);
 
       this.instance = server
         .listen(port)

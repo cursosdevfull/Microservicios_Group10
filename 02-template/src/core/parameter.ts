@@ -2,7 +2,7 @@ import { MySQLConfig } from "./interface/mysql";
 import { RedisConfig } from "./interface/redis";
 
 export class Parameter {
-  static readonly PORT = Number(process.env.PORT) || 3000;
+  static readonly PORT = Number(process.env.APPLICATION_PORT) || 3000;
 
   static readonly MYSQL_CONFIG: MySQLConfig = {
     host: process.env.MYSQL_HOST || "localhost",
@@ -27,4 +27,6 @@ export class Parameter {
     maxRetriesPerRequest:
       Number(process.env.REDIS_MAX_RETRIES_PER_REQUEST) || 10,
   };
+
+  static readonly ENVIRONMENT = process.env.NODE_ENV || "development";
 }

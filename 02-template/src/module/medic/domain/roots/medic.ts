@@ -1,3 +1,5 @@
+import { Address } from "../entities/address";
+import { Disease } from "../entities/disease";
 import { Specialty } from "../entities/specialty";
 
 export interface MedicEssentials {
@@ -12,10 +14,10 @@ export interface MedicEssentials {
 export interface MedicOptionals {
   readonly phone: string;
   readonly gender: string;
-  readonly address: string[];
+  readonly address: Address[];
   readonly nationality: string;
   readonly specialty: Specialty;
-  readonly diseases: string[];
+  readonly diseases: Disease[];
   readonly age: number;
   readonly isActive: boolean;
   readonly createdAt: Date;
@@ -29,6 +31,8 @@ export type MedicUpdateProps = Partial<
   Omit<MedicEssentials, "id" | "email"> &
     Omit<MedicOptionals, "isActive" | "createdAt" | "updatedAt" | "deletedAt">
 >;
+
+export type GENDER = "M" | "F";
 export class Medic {
   private readonly id: string;
   private name: string;
@@ -37,11 +41,11 @@ export class Medic {
   private readonly email: string;
   private cmp: string;
   private phone: string;
-  private gender: string;
-  private address: string[];
+  private gender: GENDER;
+  private address: Address[];
   private nationality: string;
   private specialty: Specialty;
-  private diseases: string[];
+  private diseases: Disease[];
   private age: number;
   private isActive: boolean;
   private readonly createdAt: Date;

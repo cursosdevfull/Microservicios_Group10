@@ -1,0 +1,17 @@
+post http://localhost:3000/medic
+content-type: application/json
+
+{
+    "name": "medic1",
+    "lastname": "perez",
+    "dni": "12345677",
+    "email": "correo@correo.com",
+    "cmp": "12345",
+    "gender": "M",
+    "address": [{
+        "id": "876358dc-8418-43aa-ab69-2787220",
+        "street": "calle 1",
+        "number": "123",
+        "complement": "abc"
+    }]
+}

@@ -18,4 +18,8 @@ export default class MySQLBootstrap implements Bootstrap {
   close(): void {
     MySQLBootstrap.appDataSource?.destroy();
   }
+
+  static getDataSource(): DataSource {
+    return MySQLBootstrap.appDataSource;
+  }
 }

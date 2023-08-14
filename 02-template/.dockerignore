@@ -4,3 +4,5 @@ dist
 logs
 reports
 test-report.xml
+.env
+.env-simple
