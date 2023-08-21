@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  mysql-server:
+    image: mysql:8
+    container_name: mysql-server
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: course
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    volumes:
+      - vol-course-mysql-server:/var/lib/mysql
+    networks:
+      - net-course
+
+  mysql-client:
+    image: phpmyadmin:5
+    container_name: mysql-client
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - net-course
+
+  redis-server:
+    image: redis:6.0.5-alpine
+    container_name: redis-server
+    command: redis-server --requirepass TOP_SECRET
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - net-course
+
+  redis-client:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-client
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=TOP_SECRET
+    depends_on:
+      - redis-server
+    networks:
+      - net-course
+
+volumes:
+  vol-course-mysql-server:
+
+networks:
+  net-course:
+    driver: bridge
