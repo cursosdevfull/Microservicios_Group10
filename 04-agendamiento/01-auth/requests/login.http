@@ -1,0 +1,7 @@
+post http://localhost:3010/auth/login
+content-type: application/json
+
+{
+    "email": "carla.martinez@correo.com",
+    "password": "123"
+}

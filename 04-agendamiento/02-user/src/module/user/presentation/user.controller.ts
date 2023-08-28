@@ -22,23 +22,81 @@ export class UserController {
     res.json(userResult.value);
   }
 
-  update(req: Request, res: Response) {
-    res.send("Updating user");
+  async update(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const userResult = await this.application.getById(id);
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    const user = userResult.value;
+    user.update(req.body);
+
+    const userUpdateResult = await this.application.save(user);
+    if (userUpdateResult.isErr()) {
+      return next(userUpdateResult.error);
+    }
+
+    res.json(userUpdateResult.value);
   }
 
-  delete(req: Request, res: Response) {
-    res.send("Deleting user");
+  async delete(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const userResult = await this.application.getById(id);
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    const user = userResult.value;
+    user.delete();
+
+    const userDeleteResult = await this.application.save(user);
+    if (userDeleteResult.isErr()) {
+      return next(userDeleteResult.error);
+    }
+
+    res.json(userDeleteResult.value);
   }
 
-  getAll(req: Request, res: Response) {
-    res.send("Getting all users");
+  async getAll(req: Request, res: Response, next: NextFunction) {
+    const userResult = await this.application.getAll();
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    res.json(userResult.value);
   }
 
-  getById(req: Request, res: Response) {
-    res.send("Getting user by id");
+  async getById(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const userResult = await this.application.getById(id);
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    res.json(userResult.value);
   }
 
-  getByPage(req: Request, res: Response) {
-    res.send("Getting users by page");
+  async getByPage(req: Request, res: Response, next: NextFunction) {
+    const { page, size } = req.params;
+    const userResult = await this.application.getByPage(
+      Number(page),
+      Number(size)
+    );
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    res.json(userResult.value);
+  }
+
+  async getByEmail(req: Request, res: Response, next: NextFunction) {
+    const { email } = req.body;
+    const userResult = await this.application.getByEmail(email);
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    res.json(userResult.value);
   }
 }

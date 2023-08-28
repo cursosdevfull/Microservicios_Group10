@@ -1,0 +1,6 @@
+put http://localhost:3000/user/e362301b-b017-4c38-95f5-e024700f9b42
+content-type: application/json
+
+{
+    "name": "Carla Macarena"
+}

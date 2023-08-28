@@ -1,7 +1,7 @@
-import express, { Application } from 'express';
+import express, { Application } from "express";
 
-import { HandleError } from './core/presentation/handle-error';
-import MedicRouter from './module/medic/presentation/medic.routes';
+import { HandleError } from "./core/presentation/handle-error";
+import AuthRouter from "./module/auth/presentation/auth.routes";
 
 class App {
   private readonly expressApp: Application;
@@ -20,7 +20,7 @@ class App {
   }
 
   handleRoutes() {
-    this.expressApp.use("/medic", MedicRouter);
+    this.expressApp.use("/auth", AuthRouter);
   }
 
   handleHealthCheck() {

@@ -1,0 +1,6 @@
+post http://localhost:3000/user/user-by-email
+content-type: application/json
+
+{
+    "email": "carla.martinez@correo.com"
+}
