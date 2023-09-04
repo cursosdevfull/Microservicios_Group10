@@ -20,6 +20,7 @@ class ApiRoute {
 
   getRouter() {
     this.router.post("/auth/login", controller.login.bind(controller));
+    this.router.post("/appointment", controller.appointment.bind(controller));
     this.router.get(
       "/usuarios",
       Authentication.canActivate(application),

@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import { err, ok, Result } from "neverthrow";
 
-import { IError } from "../../../../../../02-template/src/core/utils/ierror.interface";
+import { IError } from "../../../core/utils/ierror.interface";
 import {
   AuthRepository,
   AuthTokens,

@@ -17,6 +17,18 @@ export class ApiController {
     res.json(result);
   }
 
+  async appointment(req: Request, res: Response, next: NextFunction) {
+    const data = req.body;
+
+    const result = await this.application.endpointRequest(
+      Parameter.SERVICE_APPOINTMENT,
+      "POST",
+      data
+    );
+
+    res.json(result);
+  }
+
   async getUsers(req: Request, res: Response, next: NextFunction) {
     const result = await this.application.endpointRequest(
       Parameter.SERVICE_USER_LIST,

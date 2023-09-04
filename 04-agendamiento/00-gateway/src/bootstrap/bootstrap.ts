@@ -1,6 +1,4 @@
-import { DataSource } from "typeorm";
-
-export type BootstrapReturn = boolean | Error | DataSource;
+export type BootstrapReturn = boolean | Error;
 
 export interface Bootstrap {
   initialize(): Promise<BootstrapReturn>;

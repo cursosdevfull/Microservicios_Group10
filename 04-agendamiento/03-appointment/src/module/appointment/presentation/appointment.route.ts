@@ -1,15 +1,15 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import { Validator } from '../../../core/presentation/validator';
-import { UserApplication } from '../application/user.application';
-import { UserRepository } from '../domain/repositories/user.repository';
-import { UserInfrastructure } from '../infrastructure/user.infrastructure';
-import { AppointmentCreateDto } from './dtos/requests/appointment-create';
-import { UserController } from './user.controller';
+import { Validator } from "../../../core/presentation/validator";
+import { AppointmentApplication } from "../application/appointment.application";
+import { AppointmentRepository } from "../domain/repositories/appointment.repository";
+import { AppointmentInfrastructure } from "../infrastructure/appointment.infrastructure";
+import { AppointmentController } from "./appointment.controller";
+import { AppointmentCreateDto } from "./dtos/requests/appointment-create";
 
-const repository: UserRepository = new UserInfrastructure();
-const application = new UserApplication(repository);
-const controller = new UserController(application);
+const repository: AppointmentRepository = new AppointmentInfrastructure();
+const application = new AppointmentApplication(repository);
+const controller = new AppointmentController(application);
 
 class AppointmentRoute {
   private router: Router;

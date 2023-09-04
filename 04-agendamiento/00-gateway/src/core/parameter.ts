@@ -18,5 +18,10 @@ export class Parameter {
     );
   }
 
+  static get SERVICE_APPOINTMENT() {
+    return (
+      process.env.SERVICE_APPOINTMENT || "http://localhost:3030/appointment"
+    );
+  }
   static readonly ENVIRONMENT = process.env.NODE_ENV || "development";
 }

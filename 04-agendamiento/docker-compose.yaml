@@ -52,6 +52,263 @@ services:
     networks:
       - net-course
 
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - net-course
+
+  gateway:
+    build:
+      context: ./
+      dockerfile: 00-gateway/Dockerfile
+      args:
+        - BASE_DIR=00-gateway
+    container_name: gateway
+    restart: always
+    environment:
+      - APPLICATION_PORT=3020
+      - SERVICE_AUTH_LOGIN=http://auth:3010/auth/login
+      - SERVICE_AUTH_VALIDATE_TOKEN=http://auth:3010/auth/validate-token
+      - SERVICE_USER_LIST=http://user:3000/user
+      - SERVICE_APPOINTMENT=http://appointment:3030/appointment
+    ports:
+      - "3020:3020"
+    networks:
+      - net-course
+
+  auth:
+    build:
+      context: ./
+      dockerfile: 01-auth/Dockerfile
+      args:
+        - BASE_DIR=01-auth
+    container_name: auth
+    restart: always
+    environment:
+      - APPLICATION_PORT=3010
+      - SERVICE_USER_BY_EMAIL=http://user:3000/user/user-by-email
+      - TOKEN_SECRET=f97666dd-3687-4a19-995b-ac184c08e760
+    ports:
+      - "3010:3010"
+    networks:
+      - net-course
+
+  user:
+    build:
+      context: ./
+      dockerfile: 02-user/Dockerfile
+      args:
+        - BASE_DIR=02-user
+    container_name: user
+    restart: always
+    environment:
+      - APPLICATION_PORT=3000
+      - MYSQL_HOST=mysql-server
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=course
+      - MYSQL_SYNCHRONIZE=true
+      - MYSQL_POOL_SIZE=10
+      - MYSQL_LOGGING=true
+      - MYSQL_ENTITIES=dist/**/infrastructure/**/*.entity.js
+      - MYSQL_MAX_QUERY_EXECUTION_TIME=10000
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=TOP_SECRET
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql-server
+      - redis-server
+    networks:
+      - net-course
+
+  appointment:
+    build:
+      context: ./
+      dockerfile: 03-appointment/Dockerfile
+      args:
+        - BASE_DIR=03-appointment
+    container_name: appointment
+    restart: always
+    environment:
+      - APPLICATION_PORT=3030
+      - MYSQL_HOST=mysql-server
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=course
+      - MYSQL_SYNCHRONIZE=true
+      - MYSQL_POOL_SIZE=10
+      - MYSQL_LOGGING=true
+      - MYSQL_ENTITIES=dist/**/infrastructure/**/*.entity.js
+      - MYSQL_MAX_QUERY_EXECUTION_TIME=10000
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=TOP_SECRET
+      - RABBIT_HOST=rabbitmq:5672
+      - EXCHANGE_NAME=course
+      - EXCHANGE_TYPE=direct
+    ports:
+      - "3030:3030"
+    depends_on:
+      - mysql-server
+      - redis-server
+      - rabbitmq
+    networks:
+      - net-course
+
+  appointment-mx:
+    build:
+      context: ./
+      dockerfile: 04-appointment-mx/Dockerfile
+      args:
+        - BASE_DIR=04-appointment-mx
+    container_name: appointment-mx
+    restart: always
+    environment:
+      - APPLICATION_PORT=3040
+      - MYSQL_HOST=mysql-server
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=course
+      - MYSQL_SYNCHRONIZE=true
+      - MYSQL_POOL_SIZE=10
+      - MYSQL_LOGGING=true
+      - MYSQL_ENTITIES=dist/**/infrastructure/**/*.entity.js
+      - MYSQL_MAX_QUERY_EXECUTION_TIME=10000
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=TOP_SECRET
+      - RABBIT_HOST=rabbitmq:5672
+      - EXCHANGE_NAME=course
+      - EXCHANGE_TYPE=direct
+      - ROUTING_KEY=MX
+      - EXCHANGE_NAME_DLQ=course-dlq
+      - ROUTING_KEY_DLQ=help-desk
+    ports:
+      - "3040:3040"
+    depends_on:
+      - mysql-server
+      - redis-server
+      - rabbitmq
+    networks:
+      - net-course
+
+  appointment-pe:
+    build:
+      context: ./
+      dockerfile: 05-appointment-pe/Dockerfile
+      args:
+        - BASE_DIR=05-appointment-pe
+    container_name: appointment-pe
+    restart: always
+    environment:
+      - APPLICATION_PORT=3050
+      - MYSQL_HOST=mysql-server
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=course
+      - MYSQL_SYNCHRONIZE=true
+      - MYSQL_POOL_SIZE=10
+      - MYSQL_LOGGING=true
+      - MYSQL_ENTITIES=dist/**/infrastructure/**/*.entity.js
+      - MYSQL_MAX_QUERY_EXECUTION_TIME=10000
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=TOP_SECRET
+      - RABBIT_HOST=rabbitmq:5672
+      - EXCHANGE_NAME=course
+      - EXCHANGE_TYPE=direct
+      - ROUTING_KEY=PE
+    ports:
+      - "3050:3050"
+    depends_on:
+      - mysql-server
+      - redis-server
+      - rabbitmq
+    networks:
+      - net-course
+
+  appointment-co:
+    build:
+      context: ./
+      dockerfile: 06-appointment-co/Dockerfile
+      args:
+        - BASE_DIR=06-appointment-co
+    container_name: appointment-co
+    restart: always
+    environment:
+      - APPLICATION_PORT=3060
+      - MYSQL_HOST=mysql-server
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=course
+      - MYSQL_SYNCHRONIZE=true
+      - MYSQL_POOL_SIZE=10
+      - MYSQL_LOGGING=true
+      - MYSQL_ENTITIES=dist/**/infrastructure/**/*.entity.js
+      - MYSQL_MAX_QUERY_EXECUTION_TIME=10000
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=TOP_SECRET
+      - RABBIT_HOST=rabbitmq:5672
+      - EXCHANGE_NAME=course
+      - EXCHANGE_TYPE=direct
+      - ROUTING_KEY=CO
+    ports:
+      - "3060:3060"
+    depends_on:
+      - mysql-server
+      - redis-server
+      - rabbitmq
+    networks:
+      - net-course
+
+  help-desk:
+    build:
+      context: ./
+      dockerfile: 07-help-desk/Dockerfile
+      args:
+        - BASE_DIR=07-help-desk
+    container_name: help-desk
+    restart: always
+    environment:
+      - APPLICATION_PORT=3070
+      - MYSQL_HOST=mysql-server
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=course
+      - MYSQL_SYNCHRONIZE=true
+      - MYSQL_POOL_SIZE=10
+      - MYSQL_LOGGING=true
+      - MYSQL_ENTITIES=dist/**/infrastructure/**/*.entity.js
+      - MYSQL_MAX_QUERY_EXECUTION_TIME=10000
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=TOP_SECRET
+      - RABBIT_HOST=rabbitmq:5672
+      - EXCHANGE_NAME=course-dlq
+      - EXCHANGE_TYPE=direct
+      - ROUTING_KEY=help-desk
+    ports:
+      - "3070:3070"
+    depends_on:
+      - mysql-server
+      - redis-server
+      - rabbitmq
+    networks:
+      - net-course
+
 volumes:
   vol-course-mysql-server:
 

@@ -1,0 +1,7 @@
+node_modules
+cache
+dist
+logs
+reports
+test-report.xml
+.env
