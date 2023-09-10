@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-mx-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment-mx-app
+  template:
+    metadata:
+      labels:
+        app: appointment-mx-app
+    spec:
+      containers:
+        - name: appointment-mx
+          image: localhost:5000/appointment-mx
+          imagePullPolicy: Always
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 8080
+        initialDelaySeconds: 3
+        periodSeconds: 3

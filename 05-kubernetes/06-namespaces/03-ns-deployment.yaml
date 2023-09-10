@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nsp-dev
+  labels:
+    env: dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-dev
+  namespace: nsp-dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: frontend
+        env: dev
+    spec:
+      containers:
+        - name: web01
+          image: nginx:alpine
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nsp-uat
+  labels:
+    env: uat
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-uat
+  namespace: nsp-uat
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: frontend
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: frontend
+        env: dev
+    spec:
+      containers:
+        - name: web01
+          image: nginx:alpine
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nsp-prd
+  labels:
+    env: prd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-prd
+  namespace: nsp-prd
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: frontend
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: frontend
+        env: dev
+    spec:
+      containers:
+        - name: web01
+          image: nginx:alpine

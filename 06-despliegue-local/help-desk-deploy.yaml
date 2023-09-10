@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: help-desk-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: help-desk-app
+  template:
+    metadata:
+      labels:
+        app: help-desk-app
+    spec:
+      containers:
+        - name: help-desk
+          image: localhost:5000/help-desk
+          imagePullPolicy: Always
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 8080
+        initialDelaySeconds: 3
+        periodSeconds: 3
