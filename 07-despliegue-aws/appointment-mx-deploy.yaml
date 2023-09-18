@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-deploy
+  name: appointment-mx-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-app
+      app: appointment-mx-app
   template:
     metadata:
       labels:
-        app: user-app
+        app: appointment-mx-app
     spec:
       containers:
-        - name: user
-          image: localhost:5000/user
+        - name: appointment-mx
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-mx
           imagePullPolicy: Always
           ports:
-            - containerPort: 3000
+            - containerPort: 3040
           env:
             - name: APPLICATION_PORT
-              value: "3000"
+              value: "3040"
             - name: MYSQL_HOST
               valueFrom:
                 secretKeyRef:
@@ -71,9 +71,39 @@ spec:
                 secretKeyRef:
                   name: redis-secret
                   key: password
+            - name: RABBIT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: host
+            - name: EXCHANGE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_name
+            - name: EXCHANGE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_type
+            - name: ROUTING_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: routing_key_mx
+            - name: EXCHANGE_NAME_DLQ
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_name_dlq
+            - name: ROUTING_KEY_DLQ
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: routing_key_dlq
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 3000
+              port: 3040
             initialDelaySeconds: 3
             periodSeconds: 3

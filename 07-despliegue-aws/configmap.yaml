@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbit-config
+data:
+  host: rabbitmq-svc:5672
+  exchange_name: course
+  exchange_type: direct
+  routing_key_mx: MX
+  routing_key_pe: PE
+  routing_key_co: CO
+  exchange_name_dlq: course-dlq
+  routing_key_dlq: help-desk

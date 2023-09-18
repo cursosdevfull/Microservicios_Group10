@@ -1,0 +1,7 @@
+post http://k8s-default-ingressa-5393617baa-1045321062.us-east-1.elb.amazonaws.com/api/auth/login
+content-type: application/json
+
+{
+    "email": "carla.martinez@correo.com",
+    "password": "123"
+}

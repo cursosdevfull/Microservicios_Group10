@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-deploy
+  name: help-desk-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-app
+      app: help-desk-app
   template:
     metadata:
       labels:
-        app: user-app
+        app: help-desk-app
     spec:
       containers:
-        - name: user
-          image: localhost:5000/user
+        - name: help-desk
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/help-desk
           imagePullPolicy: Always
           ports:
-            - containerPort: 3000
+            - containerPort: 3070
           env:
             - name: APPLICATION_PORT
-              value: "3000"
+              value: "3070"
             - name: MYSQL_HOST
               valueFrom:
                 secretKeyRef:
@@ -71,9 +71,29 @@ spec:
                 secretKeyRef:
                   name: redis-secret
                   key: password
+            - name: RABBIT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: host
+            - name: EXCHANGE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_name
+            - name: EXCHANGE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_type
+            - name: ROUTING_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: routing_key_dlq
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 3000
+              port: 3070
             initialDelaySeconds: 3
             periodSeconds: 3

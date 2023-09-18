@@ -62,6 +62,7 @@ services:
       - net-course
 
   gateway:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/gateway
     build:
       context: ./
       dockerfile: 00-gateway/Dockerfile
@@ -81,6 +82,7 @@ services:
       - net-course
 
   auth:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/auth
     build:
       context: ./
       dockerfile: 01-auth/Dockerfile
@@ -98,6 +100,7 @@ services:
       - net-course
 
   user:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/user
     build:
       context: ./
       dockerfile: 02-user/Dockerfile
@@ -129,6 +132,7 @@ services:
       - net-course
 
   appointment:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment
     build:
       context: ./
       dockerfile: 03-appointment/Dockerfile
@@ -153,7 +157,6 @@ services:
       - REDIS_PASSWORD=TOP_SECRET
       - RABBIT_HOST=rabbitmq:5672
       - EXCHANGE_NAME=course
-      - EXCHANGE_NAME_ERROR=exchange-error
       - EXCHANGE_TYPE=direct
     ports:
       - "3030:3030"
@@ -165,6 +168,7 @@ services:
       - net-course
 
   appointment-mx:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-mx
     build:
       context: ./
       dockerfile: 04-appointment-mx/Dockerfile
@@ -192,7 +196,6 @@ services:
       - EXCHANGE_TYPE=direct
       - ROUTING_KEY=MX
       - EXCHANGE_NAME_DLQ=course-dlq
-      - EXCHANGE_NAME_ERROR=exchange-error
       - ROUTING_KEY_DLQ=help-desk
     ports:
       - "3040:3040"
@@ -204,6 +207,7 @@ services:
       - net-course
 
   appointment-pe:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-pe
     build:
       context: ./
       dockerfile: 05-appointment-pe/Dockerfile
@@ -240,6 +244,7 @@ services:
       - net-course
 
   appointment-co:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-co
     build:
       context: ./
       dockerfile: 06-appointment-co/Dockerfile
@@ -276,6 +281,7 @@ services:
       - net-course
 
   help-desk:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/help-desk
     build:
       context: ./
       dockerfile: 07-help-desk/Dockerfile

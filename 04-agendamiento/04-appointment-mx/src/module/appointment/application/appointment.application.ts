@@ -11,11 +11,13 @@ export class AppointmentApplication {
     await this.repository.receive(this.consumer);
   }
 
-  consumer(message: any) {
+  async consumer(message: any) {
     if (message) {
       //RabbitMQBootstrap.channel.ack(message);
       RabbitMQBootstrap.channel.reject(message, false);
       logger.info(`Message received: ${message.content.toString()}`);
+
+      await this.repository.sendError(JSON.parse(message.content.toString()));
     }
   }
 }

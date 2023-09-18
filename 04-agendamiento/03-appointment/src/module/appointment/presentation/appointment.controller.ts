@@ -18,4 +18,8 @@ export class AppointmentController {
 
     res.json(appoinmentResult.value);
   }
+
+  async listen() {
+    await this.application.receive();
+  }
 }

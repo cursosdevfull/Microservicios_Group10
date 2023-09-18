@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: gateway-deploy
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: gateway-app
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: localhost:5000/gateway
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/gateway
           imagePullPolicy: Always
           ports:
             - containerPort: 3020

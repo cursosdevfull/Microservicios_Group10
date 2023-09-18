@@ -9,4 +9,5 @@ export type AppoinmentPageResult = Result<AppoinmentPage, Error>;
 
 export interface AppointmentRepository {
   save(appoinment: Appoinment): Promise<AppoinmentResult>;
+  receive(consumer: (message: any) => void): Promise<void>;
 }

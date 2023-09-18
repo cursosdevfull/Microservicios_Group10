@@ -16,9 +16,94 @@ spec:
         - name: appointment-co
           image: localhost:5000/appointment-co
           imagePullPolicy: Always
-      livenessProbe:
-        httpGet:
-          path: /healthz
-          port: 8080
-        initialDelaySeconds: 3
-        periodSeconds: 3
+          ports:
+            - containerPort: 3060
+          env:
+            - name: APPLICATION_PORT
+              value: "3060"
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: host
+            - name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: port
+            - name: MYSQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: database
+            - name: MYSQL_SYNCHRONIZE
+              value: "true"
+            - name: MYSQL_POOL_SIZE
+              value: "10"
+            - name: MYSQL_LOGGING
+              value: "true"
+            - name: MYSQL_ENTITIES
+              value: dist/**/infrastructure/**/*.entity.js
+            - name: MYSQL_MAX_QUERY_EXECUTION_TIME
+              value: "10000"
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: host
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: password
+            - name: RABBIT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: host
+            - name: EXCHANGE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_name
+            - name: EXCHANGE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_type
+            - name: ROUTING_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: routing_key_co
+            - name: EXCHANGE_NAME_DLQ
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_name_dlq
+            - name: ROUTING_KEY_DLQ
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: routing_key_dlq
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3060
+            initialDelaySeconds: 3
+            periodSeconds: 3

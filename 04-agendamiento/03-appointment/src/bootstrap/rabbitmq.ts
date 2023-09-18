@@ -14,6 +14,7 @@ export default class RabbitMQBootstrap implements Bootstrap {
         const connection = await amqp.connect(`amqp://${host}`);
         RabbitMQBootstrap.channel = await connection.createChannel();
         logger.info(`RabbitMQ connected on ${host}`);
+        resolve(true);
       } catch (error) {
         logger.error(error);
         reject(error);

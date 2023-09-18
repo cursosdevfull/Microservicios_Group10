@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: localhost:5000/auth
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/auth
           imagePullPolicy: Always
           ports:
             - containerPort: 3010

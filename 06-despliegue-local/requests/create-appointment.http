@@ -1,9 +1,9 @@
-POST http://localhost:3020/api/appointment
+POST http://localhost/api/appointment
 content-type: application/json
 
 {
     "name": "Sergio",
-    "lastname": "Hidalgo Cáceres",
+    "lastname": "Hidalgo",
     "email": "hidalgo.sergio@email.com",
     "date": "2023-09-04T15:00:00.000Z",
     "medicId": "10",

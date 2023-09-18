@@ -1,5 +1,5 @@
-import { MySQLConfig } from "./interface/mysql";
-import { RedisConfig } from "./interface/redis";
+import { MySQLConfig } from './interface/mysql';
+import { RedisConfig } from './interface/redis';
 
 export class Parameter {
   static get PORT() {
@@ -44,6 +44,10 @@ export class Parameter {
 
   static get EXCHANGE_NAME(): string {
     return process.env.EXCHANGE_NAME || "exchange";
+  }
+
+  static get EXCHANGE_NAME_ERROR(): string {
+    return process.env.EXCHANGE_NAME_ERROR || "exchange-error";
   }
 
   static get EXCHANGE_TYPE(): string {
